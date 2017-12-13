@@ -1,6 +1,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>  
 #include <cmath>
+#include <vector>
 
 using namespace std;
 using namespace cv;
@@ -9,10 +10,24 @@ using namespace cv;
 void makeColorbarIndex(vector<Scalar> &colorbarIndex);
 void makeColorwheelIndex(vector<Scalar> &colorwheelIndex);
 void colorwheel(Mat &colorwheelImage, int dim);
+void colorbar(Mat &colorbarImage, int length, int width);
 
 int main()
 {
-	Mat color
+	std::cout << "Please enter the output of image path : ";
+	string filepath;
+	std::cin >> filepath;
+
+	Mat colorwheelImg, colorbarImg;
+
+	colorwheel(colorwheelImg, 400);
+	string colorwheel_file = filepath + "\\" + "colorwheel.png";
+	imwrite(colorwheel_file, colorwheelImg);
+
+	colorbar(colorbarImg, 400, 50);
+	string colorbar_file = filepath + "\\" + "colorbar.png";
+	imwrite(colorbar_file, colorbarImg);
+
 	return 0;
 }
 
@@ -78,8 +93,8 @@ void colorwheel(Mat &colorwheelImage, int dim)
 	vector<Scalar> colorwheelIndex; //Scalar r,g,b  
 	makeColorwheelIndex(colorwheelIndex);
 
-	for (int i = 0; i < dim - 1; ++i)
-		for (int j = 0; j < dim - 1; ++j)
+	for (int i = 0; i < dim; ++i)
+		for (int j = 0; j < dim; ++j)
 		{
 			int x = j - (dim - 1) / 2;
 			int y = i - (dim - 1) / 2;
@@ -116,7 +131,7 @@ void colorbar(Mat &colorbarImage, int length, int width)
 	for (int i = 0; i < length; ++i)
 		for (int j = 0; j < width; ++j)
 		{
-			double fk = (double)i / (double)length*colorbarIndex.size();
+			double fk = (double)i / (double)length*(colorbarIndex.size()-1);
 			int k0 = floor(fk);						//計算長度對應之漸層色的索引位置下界
 			int k1 = ceil(fk);						//計算長度對應之漸層色的索引位置上界
 			float f = fk - k0;						//計算實際索引位置至索引位置下界的距離
