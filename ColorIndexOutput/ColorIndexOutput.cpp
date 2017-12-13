@@ -12,7 +12,7 @@ void colorwheel(Mat &colorwheelImage, int dim);
 
 int main()
 {
-
+	Mat color
 	return 0;
 }
 
